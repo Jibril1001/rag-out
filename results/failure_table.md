@@ -1,81 +1,83 @@
-# Draft failure table (fill in 'cause' and 'fix' by reading each row)
+# Failure table (10 development cases)
+
+Each case lists the question ID, the observed problem (with the gold passage and the top-1 retrieved chunk), the likely cause, and the proposed fix. Labels come from the failure funnel in `src/ragopt/analysis/funnel.py`.
 
 ## f651cd14 | wrong_paper
 - **Question:** what evaluation metrics did they use?
 - **Target paper:** Improving Neural Text Simplification Model with Simplified Corpora
 - **Gold (s5:p2, Evaluation):** 'Metrics. Three metrics in text simplification are chosen in this paper. BLEU BIBREF5 is one traditional machine translation metric to assess the degree to which translated simplifications differed from reference simplifi'
 - **Top-1 retrieved (paper: Handling Divergent Reference Texts when Evaluating Table-to-Text Gener):** 'on extraction model described in § SECREF4 . All the models in this category produce high quality fluent texts, and differ primarily on the quantity and accuracy of the information they express. Here we are testing wheth'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The question is short and generic ("evaluation metrics"), so the dense embedding ranks a thematically similar paper about evaluating table-to-text output above the target paper. The target paper's distinctive terms ("BLEU", "simplification") are diluted in the averaged query/document embeddings.
+- **Proposed fix:** Add BM25 lexical retrieval fused with dense via RRF (optimization B) so the exact tokens "BLEU"/"simplification" match the target paper, and prepend the paper title to each chunk embedding (optimization A) to disambiguate papers with overlapping topics.
 
 ## 82595ca5 | incomplete_multi_evidence
 - **Question:** What are the organic and inorganic ways to show political affiliation through profile changes?
 - **Target paper:** Is change the only constant? Profile change perspective on #LokSabhaElections2019
-- **Gold (s11:p0, Political support through profile meta data ::: The Chowkidar movement):** 'As discussed is Section SECREF1, @narendramodi added “Chowkidar” to his display name in response to an opposition campaign called “Chowkidar chor hai”. In a coordinated campaign, several other leaders and ministers of BJ'
+- **Gold (s11:p0, Political support through profile meta data ::: The Chowkidar movement):** 'As discussed is Section SECREF1, @narendramodi added "Chowkidar" to his display name in response to an opposition campaign called "Chowkidar chor hai". In a coordinated campaign, several other leaders and ministers of BJ'
 - **Top-1 retrieved (paper: Is change the only constant? Profile change perspective on #LokSabhaEl):** 'rth to same profile attribute, with the change in attribute being active support to a political party or political leader.\n\nWe argue that we can predict the political inclination of a user using just the profile attribut'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The question has two parts (organic vs inorganic) whose evidence sits in different paragraphs. The correct paper is retrieved, but the top-10 covers only one aspect, so not all gold paragraphs reach 80% token coverage.
+- **Proposed fix:** Structure-aware chunks that keep each subsection intact (optimization A) plus cross-encoder reranking of the top-30 candidates (optimization C) to surface the additional relevant passages into the top-10.
 
 ## 9b7655d3 | boundary_split
 - **Question:** Which toolkits do they use?
 - **Target paper:** Performance Comparison of Crowdworkers and NLP Tools onNamed-Entity Recognition and Sentiment Analysis of Political Tweets
 - **Gold (s1:p2, NLP Toolkits):** 'Among commercial NLP toolkits (e.g., BIBREF14, BIBREF15, BIBREF16), we selected BIBREF17 and BIBREF18 for our experiments, which, to the best of our knowledge, are the only publicly accessible commercial APIs for the tas'
 - **Top-1 retrieved (paper: NeuronBlocks: Building Your NLP DNN Models Like Playing Lego):** 'SON files. The experiments on several NLP datasets such as GLUE, WikiQA and CoNLL-2003 demonstrate the effectiveness of NeuronBlocks.\n\nDeep Neural Networks (DNN) have been widely employed in industry for solving various '
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The fixed 1,000-character window cuts the "NLP Toolkits" section so that the chunk overlapping the gold paragraph does not contain 80% of its tokens; the tool names end up straddling a chunk boundary.
+- **Proposed fix:** Structure-aware chunking (optimization A) that snaps chunk edges to section/paragraph boundaries so the toolkit list stays inside a single chunk.
 
 ## 051df74d | ranked_too_low
 - **Question:** How did they obtain the OSG dataset?
 - **Target paper:** Affective Behaviour Analysis of On-line User Interactions: Are On-line Support Groups more Therapeutic than Twitter?
 - **Gold (s5:p0, Datasets ::: OSG):** 'Our data has been developed by crawling and pre-processing an OSG web forum. The forum has a great variety of different groups such as depression, anxiety, stress, relationship, cancer, sexually transmitted diseases, etc'
 - **Top-1 retrieved (paper: RUN through the Streets: A New Dataset and Baseline Models for Realist):** ' that following the individual instructions in the paragraph one by one will lead the agent to the intended end-point. The output of RUN is the entire route described by the paragraph, i.e., all coordinates up to and inc'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The exact passage ("crawling and pre-processing an OSG web forum") is present in the candidate set but ranked outside the top-10 because the dense score favors a generically similar paper.
+- **Proposed fix:** Cross-encoder reranking of the top-30 candidates (optimization C) to lift the semantically exact passage into the top-10.
 
 ## bc31a3d2 | not_found
 - **Question:** What BERT model do they test?
 - **Target paper:** Symmetric Regularization based BERT for Pair-wise Semantic Reasoning
 - **Gold (s6:p0, Experiment Settings):** 'This section gives detailed experiment settings. The method is evaluated on the BERTbase model, which has 12 layers, 12 self-attention heads with a hidden size of 768.'
 - **Top-1 retrieved (paper: Pretraining-Based Natural Language Generation for Text Summarization):** 'or the decoder to learn summary representations, context interactions and language modeling together.\n\nRecently, BERT has been successfully used in various natural language processing tasks, such as textual entailment, n'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The distinguishing token "BERTbase" only occurs in the gold paragraph; the dense embedding of "BERT model" matches many papers, so the target paper is not even in the top-50 candidates.
+- **Proposed fix:** BM25 lexical retrieval (optimization B) on the rare exact token "BERTbase" to pull the target paper into the candidate set.
 
 ## c00ce1e3 | wrong_paper
 - **Question:** What activation function do they use in their model?
 - **Target paper:** FacTweet: Profiling Fake News Twitter Accounts
 - **Gold (s2:p11, Experiments and Results):** "Experimental Setup. We apply a 5 cross-validation on the account's level. For the FacTweet model, we experiment with 25% of the accounts for validation and parameters selection. We use hyperopt library to select the hype"
 - **Top-1 retrieved (paper: Natural Language Generation for Spoken Dialogue System using RNN Encod):** '}\n\\\\ \\textbf {h}_{t-1}\n\\end{pmatrix}\\\\\n\\end{aligned}$$   (Eq. 20) \n\nwhere $n$ is hidden layer size, $\\textbf {W}_{4n,4n}$ is model parameters. The cell memory value $\\textbf {c}_{t}$ is modified to depend on the DA repre'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** A generic model-architecture query whose dense embedding is dominated by shared "model" vocabulary; the target paper's specific activation-function sentence is not salient enough to outrank papers full of equations.
+- **Proposed fix:** Hybrid dense + BM25 (optimization B) combined with title context in embeddings (optimization A) to anchor retrieval to the FacTweet paper via distinctive terms.
 
 ## e838275b | incomplete_multi_evidence
 - **Question:** How did they analyze which topics, dialects and gender are most associated with tweets?
 - **Target paper:** Arabic Offensive Language on Twitter: Analysis and Experiments
 - **Gold (s8:p0, Data Collection ::: Statistics and User Demographics):** 'Given the annotated tweets, we wanted to ascertain the distribution of: types of offensive language, genres where it is used, the dialects used, and the gender of users using such language.'
 - **Top-1 retrieved (paper: Seernet at EmoInt-2017: Tweet Emotion Intensity Estimator):** " tweet has meta data like location and language used by the sender. It's challenging to analyze this data because the tweets might not be grammatically correct and the users tend to use informal and slang words all the t"
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** A multi-faceted question (topics, dialects, gender) whose answer spans several paragraphs; the top-10 misses some of the gold paragraphs, leaving the evidence only partially covered.
+- **Proposed fix:** Rerank the top-30 candidates (optimization C) and use structure-aware chunks (optimization A) so each facet's passage is kept intact and ranked into the top-10.
 
 ## beac555c | boundary_split
 - **Question:** What useful information does attention capture?
 - **Target paper:** What does Attention in Neural Machine Translation Pay Attention to?
 - **Gold (s0:p4, Introduction):** 'Our analysis shows that attention models traditional alignment in some cases more closely while it captures information beyond alignment in others. For instance, attention agrees with traditional alignments to a high deg'
 - **Top-1 retrieved (paper: What does Attention in Neural Machine Translation Pay Attention to?):** 'rtion of attention being paid to words other than alignment points, is already capturing other relevant information. Training attention with alignments in this case will force the attention model to forget these useful i'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The correct paper is retrieved, but the 1,000-character fixed window splits the introduction sentence so the chunk overlapping the gold paragraph does not reach 80% token coverage.
+- **Proposed fix:** Structure-aware chunking (optimization A) that snaps chunk edges to paragraph/sentence boundaries.
 
 ## 03e9ac1a | ranked_too_low
 - **Question:** Does the model evaluated on NLG datasets or dialog datasets?
 - **Target paper:** Natural Language Generation for Spoken Dialogue System using RNN Encoder-Decoder Networks
 - **Gold (s9:p0, Datasets):** 'We assessed the proposed models on four different NLG domains: finding a restaurant, finding a hotel, buying a laptop, and buying a television. The Restaurant and Hotel were collected in BIBREF4 , while the Laptop and TV'
 - **Top-1 retrieved (paper: Data Collection for Interactive Learning through the Dialog):** 'utterances. All models must base their answers only on information gained from training dialogs and testing dialogs seen during the simulation so far, to ensure that the score will reflect the interactive learning of the'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The exact passage ("four different NLG domains: restaurant, hotel, laptop, television") is retrieved but ranked below the top-10; the dense score favors generic dialog-language chunks.
+- **Proposed fix:** Cross-encoder reranking of the top-30 (optimization C) to move the exact passage into the top-10.
 
 ## ee417fea | not_found
 - **Question:** Do they use off-the-shelf NLP systems to build their assitant?
 - **Target paper:** Multipurpose Intelligent Process Automation via Conversational Assistant
 - **Gold (s4:p13, Model ::: Dialogue Modules):** 'Natural Language Understanding (NLU): We implemented an NLU unit utilizing handcrafted rules, Regular Expressions (RegEx) and Elasticsearch (ES) API. The NLU module contains following functionalities:'
 - **Top-1 retrieved (paper: Multipurpose Intelligent Process Automation via Conversational Assista):** 'ously while supporting natural communication. A conventional dialogue system comprises multiple stages and involves different types of NLP subtasks, starting with Natural Language Understanding (NLU) (e.g., intent classi'
-- **Likely cause:** 
-- **Proposed fix:** 
+- **Likely cause:** The correct paper is retrieved, but the rare distinguishing tokens ("RegEx", "Elasticsearch") only appear in the gold paragraph, which dense retrieval does not surface within the top-50.
+- **Proposed fix:** BM25 lexical retrieval (optimization B) on the rare tokens to pull the NLU paragraph into the candidate set.

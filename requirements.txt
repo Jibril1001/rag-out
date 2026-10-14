@@ -1,0 +1,25 @@
+# Runtime dependencies for ragopt (kept in sync with pyproject.toml).
+#
+# Fresh checkout:
+#   python -m venv .venv
+#   .venv\Scripts\activate          # Windows PowerShell
+#   source .venv/bin/activate       # macOS / Linux
+#   python -m pip install -r requirements.txt
+#   python -m pytest
+#
+# Lower bounds are used so the install works on any supported Python.
+# For the exact versions of the verified environment, use
+# requirements.lock.txt (needs Python 3.12+, tested on 3.13).
+
+numpy>=1.24
+datasets>=2.19
+sentence-transformers>=2.6
+
+# Optional: answer generation (scripts/answer20.py), needs GEMINI_API_KEY
+google-genai>=0.3
+
+# Test suite
+pytest>=8
+
+# Install the project itself in editable mode so `import ragopt` works
+-e .

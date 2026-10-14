@@ -1,5 +1,3 @@
-
-@'
 # Python bytecode
 __pycache__/
 *.py[cod]
@@ -27,10 +25,10 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+submission.zip
 
 # Editor and operating system files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-'@ | Set-Content -Encoding utf8 .gitignore

@@ -5,8 +5,22 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ragopt"
 version = "0.1.0"
+description = "Retrieval optimization experiments on QASPER: chunking, hybrid BM25 + dense retrieval, and cross-encoder reranking."
+readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "numpy>=1.24",
+    "datasets>=2.19",
+    "sentence-transformers>=2.6",
+]
+
+[project.optional-dependencies]
+# google-genai is only needed for scripts/answer20.py
+answers = ["google-genai>=0.3"]
+dev = ["pytest>=8"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

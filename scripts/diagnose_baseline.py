@@ -82,5 +82,5 @@ for i, q in picked:
             f"- **Top-1 retrieved (paper: {dev.papers[top1.paper_id].title[:70]}):** {top1.text[:220]!r}",
             "- **Likely cause:** ", "- **Proposed fix:** ", ""]
 Path("results").mkdir(exist_ok=True)
-Path("results/failure_table_draft.md").write_text("\n".join(out), encoding="utf-8")
-print("\nwrote results/failure_table_draft.md with", len(picked), "questions")
+Path("results/failure_table.md").write_text("\n".join(out), encoding="utf-8")
+print("\nwrote results/failure_table.md with", len(picked), "questions")

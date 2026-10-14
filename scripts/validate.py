@@ -4,9 +4,19 @@ r"""Check submission JSONL files against the task's rules.
   python scripts\validate.py --stage retrieval ...   # answers for the 20 may still be null
 """
 import argparse
+import glob
 import json
 import re
 import sys
+
+
+def expand(paths):
+    """Let `results\\dev_*.jsonl` work even in shells that do not glob (PowerShell)."""
+    out = []
+    for p in paths:
+        hits = sorted(glob.glob(p)) or [p]
+        out.extend(hits)
+    return out
 
 
 def norm_ws(s):
@@ -85,7 +95,7 @@ if __name__ == "__main__":
     from ragopt.data import load_all
     dev, held, aq = load_all()
     bad = 0
-    for p in a.files:
+    for p in expand(a.files):
         sp = dev if "dev_" in p.replace("\\", "/").split("/")[-1] else held
         errs, n = validate_file(p, sp, sp.papers, aq, a.stage)
         print(("FAIL " if errs else "OK   ") + f"{p} ({n} records)")
