@@ -1,4 +1,4 @@
-��# RAG Optimization
+# RAG Optimization
 
 ## Overview
 
@@ -7,6 +7,8 @@ This project investigates methods for improving retrieval quality in a retrieval
 The work starts with a dense-retrieval baseline, diagnoses its failure modes, and evaluates three optimization strategies: structure-aware chunking, hybrid dense and lexical retrieval, and cross-encoder reranking.
 
 The repository contains the retrieval implementation, experiment scripts, evaluation metrics, tests, experiment outputs, a decision log, and the required JSONL submission files.
+
+> **New here?** Read [`GUIDE.md`](GUIDE.md) for a narrative walk-through of how the pipeline works, why each optimization was chosen, and what the numbers mean.
 
 ## Objectives
 
@@ -242,6 +244,10 @@ The cross-encoder reranker is the dominant cost: it accounts for the ~5 s/query 
 **What did not help.** B alone is a marginal improvement (+0.043 R@10) at a ~30x latency cost, and C alone improves ordering but barely recall (+0.035 R@10). Tested ablations that were not selected include BM25-only retrieval, structure-without-context, and larger rerank pools (50 vs 30), none of which beat the final settings.
 
 **Quality vs cost trade-off.** The final system is ~380x slower per query than the dense baseline (5.0 s vs 13 ms) because of the cross-encoder. For this offline, retrieval-first task that cost is acceptable and the gains are substantial; for a latency-sensitive production setting, structure chunking plus hybrid retrieval without reranking (roughly +0.107 R@10 over baseline at ~386 ms) is a cheaper alternative worth considering. LLM cost is tightly controlled by the task design: answers are generated for only 20 questions, one call each.
+
+## Scope and unbuilt experiments
+
+The required optimizations (A, B, C) plus the full evaluation and reporting are complete. A wider "extended bank" of techniques was planned in `decisions.md` but **not implemented or measured** — including approximate nearest-neighbor indexes (**IVF, HNSW**), MMR/dedup, HyDE, multi-query, LLM contextual enrichment, and small-to-big retrieval. Only exact dense search (`FlatIPIndex`) is used. These were deprioritized once the minimum complete submission was finished; for IVF/HNSW specifically, exact search is already microseconds at this corpus size, so approximate indexing would give ~0 accuracy gain. See [GUIDE.md §8](GUIDE.md#8-planned-but-not-built-honest-scope-statement).
 
 ## Setup and Validation
 
