@@ -1,0 +1,3430 @@
+{
+ "config": {
+  "name": "struct_noctx",
+  "chunker": "structure",
+  "size": 1000,
+  "overlap": 200,
+  "max_chars": 1000,
+  "merge_below": 300,
+  "context": false,
+  "retriever": "dense",
+  "pool": 50,
+  "rrf_k": 60,
+  "topn": 50,
+  "rerank_pool": 0,
+  "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2"
+ },
+ "split": "dev",
+ "n_chunks": 3303,
+ "summary": {
+  "union": {
+   "n": 261,
+   "R@5": 0.16279267773520648,
+   "R@10": 0.22801191996594297,
+   "MRR@10": 0.14900413549838837
+  },
+  "single": {
+   "n": 261,
+   "R@5": 0.15129842486164324,
+   "R@10": 0.21077054065559814,
+   "MRR@10": 0.14354436538344584
+  },
+  "paper_top1": 0.36015325670498083,
+  "paper_share_top10": 0.2597701149425287
+ },
+ "per_question": {
+  "a313e98994fc039a82aa2447c411dda92c65a470": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "37861be6aecd9242c4fdccdfcd06e48f3f1f8f81": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "7e62a53823aba08bc26b2812db016f5ce6159565": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "9eabb54c2408dac24f00f92cf1061258c7ea2e1a": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "boundary_split"
+  },
+  "3d013f15796ae7fed5272183a166c45f16e24e39": {
+   "union": [
+    0.25,
+    0.5,
+    0.25
+   ],
+   "single": [
+    0.25,
+    0.5,
+    0.25
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "d087539e6a38c42f0a521ff2173ef42c0733878e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "efe9bad55107a6be7704ed97ecce948a8ca7b1d2": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "455d4ef8611f62b1361be4f6387b222858bb5e56": {
+   "union": [
+    0.0,
+    0.5,
+    0.125
+   ],
+   "single": [
+    0.0,
+    0.5,
+    0.125
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "bc16ce6e9c61ae13d46970ebe6c4728a47f8f425": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "1ff0fccf0dca95a6630380c84b0422bed854269a": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "3d7d865e905295d11f1e85af5fa89b210e3e9fdf": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "2ad4d3d222f5237ed97923640bc8e199409cbe52": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "3fad42be0fb2052bb404b989cc7d58b440cd23a0": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "ee417fea65f9b1029455797671da0840c8c1abbe": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "ca5a82b54cb707c9b947aa8445aac51ea218b23a": {
+   "union": [
+    0.16666666666666666,
+    0.16666666666666666,
+    1.0
+   ],
+   "single": [
+    0.16666666666666666,
+    0.16666666666666666,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "da55bd769721b878dd17f07f124a37a0a165db02": {
+   "union": [
+    0.0,
+    1.0,
+    0.1111111111111111
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.1111111111111111
+   ],
+   "label": "success"
+  },
+  "6424e442b34a576f904d9649d63acf1e4fdefdfc": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "5eabfc6cc8aa8a99e6e42514ef9584569cb75dec": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "887c6727e9f25ade61b4853a869fe712fe0b703d": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "6236762b5631d9e395f81e1ebccc4bf3ab9b24ac": {
+   "union": [
+    0.1111111111111111,
+    0.2222222222222222,
+    0.3333333333333333
+   ],
+   "single": [
+    0.1111111111111111,
+    0.2222222222222222,
+    0.3333333333333333
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "31d695ba855d821d3e5cdb7bea638c7dbb7c87c7": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "2c78993524ca62bf1f525b60f2220a374d0e3535": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "d604f5fb114169f75f9a38fab18c1e866c5ac28b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "aefa333b2cf0a4000cd40566149816f5b36135e7": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "50e80cfa84200717921840fddcf3b051a9216ad8": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "b1bc9ae9d40e7065343c12f860a461c7c730a612": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "63a1cbe66fd58ff0ead895a8bac1198c38c008aa": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "509af1f11bd6f3db59284258e18fdfebe86cae47": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "23e16c1173b7def2c5cb56053b57047c9971e3bb": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "d78f7f84a76a07b777d4092cb58161528ca3803c": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "9da1e124d28b488b0d94998d32aa2fa8a5ebec51": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "7cd22ca9e107d2b13a7cc94252aaa9007976b338": {
+   "union": [
+    0.5,
+    0.5,
+    0.3333333333333333
+   ],
+   "single": [
+    0.5,
+    0.5,
+    0.3333333333333333
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "adbf33c6144b2f5c40d0c6a328a92687a476f371": {
+   "union": [
+    0.0,
+    0.25,
+    0.16666666666666666
+   ],
+   "single": [
+    0.0,
+    0.25,
+    0.16666666666666666
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "f7a89b9cd2792f23f2cb43d50a01b8218a6fbb24": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "a0543b4afda15ea47c1e623c7f00d4aaca045be0": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "1591068b747c94f45b948e12edafe74b5e721047": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "success"
+  },
+  "193ee49ae0f8827a6e67388a10da59e137e7769f": {
+   "union": [
+    0.0,
+    1.0,
+    0.16666666666666666
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.16666666666666666
+   ],
+   "label": "success"
+  },
+  "ed2eb4e54b641b7670ab5a7060c7b16c628699ab": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "beac555c4aea76c88f19db7cc901fa638765c250": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "91e326fde8b0a538bc34d419541b5990d8aae14b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "044f922604b4b3f42ae381419fd5cd5624fa0637": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "f94b53db307685d572aefad52cd55f53d23769c2": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "aa7d327ef98f9f9847b447d4def04889b4508d7a": {
+   "union": [
+    0.5,
+    0.5,
+    0.3333333333333333
+   ],
+   "single": [
+    0.5,
+    0.5,
+    0.3333333333333333
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "b8d7d055ddb94f5826a9aad7479b4a92a9c8a2f0": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "551457ed34ca7fc0878c85bc664b135c21059b58": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "0ad4359e3e7e5e5f261c2668fe84c12bc762b3b8": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "23b2901264bda91045258b5d4120879ae292e950": {
+   "union": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "single": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "b5bc34e1e381dbf972d0b594fe8c66ff75305d71": {
+   "union": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "single": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "72f7ef55e150e16dcf97fe443aff9971a32414ef": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "20e38438471266ce021817c6364f6a46d01564f2": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "boundary_split"
+  },
+  "28067da818e3f61f8b5152c0d42a531bf0f987d4": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "bf3b27a4f4be1f9ae31319877fd0c75c03126fd5": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "ffa7f91d6406da11ddf415ef094aaf28f3c3872d": {
+   "union": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "single": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "b1cf5739467ba90059add58d11b73d075a11ec86": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "2ea4347f1992b0b3958c4844681ff0fe4d0dd1dd": {
+   "union": [
+    0.3333333333333333,
+    0.3333333333333333,
+    1.0
+   ],
+   "single": [
+    0.3333333333333333,
+    0.3333333333333333,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "4f253dfced6a749bf57a1b4984dc962ce9550184": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "bcc0cd4e262f2db4270429ab520971bcf39414cf": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "f641f561ad2ea2794a52e4e4bdd62e1f353ab797": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "af34051bf3e628c1e2a00b110bb84e5f018b419f": {
+   "union": [
+    0.0,
+    0.8,
+    0.125
+   ],
+   "single": [
+    0.0,
+    0.8,
+    0.125
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "022c365a14fdec406c7a945a1a18e7e79df37f08": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "27275fe9f6a9004639f9ac33c3a5767fea388a98": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "ef3567ce7301b28e34377e7b62c4ec9b496f00bf": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "7595260c5747aede0b32b7414e13899869209506": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "boundary_split"
+  },
+  "c2d1387e08cf25cb6b1f482178cca58030e85b70": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "a778b8204a415b295f73b93623d09599f242f202": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "7fb27d8d5a8bb351f97236a1f6dcd8b2613b16f1": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "bdc91d1283a82226aeeb7a2f79dbbc57d3e84a1a": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "7b4fb6da74e6bd1baea556788a02969134cf0800": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "bc31a3d2f7c608df8c019a64d64cb0ccc5669210": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "c09a92e25e6a81369fcc4ae6045491f2690ccc10": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "051df74dc643498e95d16e58851701628fdfd43e": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "33554065284110859a8ea3ca7346474ab2cab100": {
+   "union": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "label": "success"
+  },
+  "1e775cf30784e6b1c2b573294a82e145a3f959bb": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "392fb87564c4f45d0d8d491a9bb217c4fce87f03": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "203337c15bd1ee05763c748391d295a1f6415b9b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "d004ca2e999940ac5c1576046e30efa3059832fa": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "21548433abd21346659505296fb0576e78287a74": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "f0b2289cb887740f9255909018f400f028b1ef26": {
+   "union": [
+    0.5,
+    0.5,
+    0.2
+   ],
+   "single": [
+    0.5,
+    0.5,
+    0.2
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "51b1142c1d23420dbf6d49446730b0e82b32137c": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "58355e2a782bf145b61ee2a3e0e426119985c179": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "e35c2fa99d5c84d8cb5d83fca2b434dcd83f3851": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "c00ce1e3be14610fb4e1f0614005911bb5ff0302": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "71fe5822d9fccb1cb391c11283b223dc8aa1640c": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "97d0f9a1540a48e0b4d30d7084a8c524dd09a4c3": {
+   "union": [
+    0.0,
+    0.3333333333333333,
+    0.1
+   ],
+   "single": [
+    0.0,
+    0.3333333333333333,
+    0.1
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "1062a0506c3691a93bb914171c2701d2ae9621cb": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "483a699563efcb8804e1861b18809279f21c7610": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "d3ff2986ca8cb85a9a5cec039c266df756947b43": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "3e1829e96c968cbd8ad8e9ce850e3a92a76b26e4": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "2317ca8d475b01f6632537b95895608dc40c4415": {
+   "union": [
+    0.3333333333333333,
+    0.6666666666666666,
+    0.3333333333333333
+   ],
+   "single": [
+    0.3333333333333333,
+    0.6666666666666666,
+    0.3333333333333333
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "3e88fb3d28593309a307eb97e875575644a01463": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "c49ee6ac4dc812ff84d255886fd5aff794f53c39": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "3f856097be2246bde8244add838e83a2c793bd17": {
+   "union": [
+    0.0,
+    1.0,
+    0.1
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "success"
+  },
+  "bf52c01bf82612d0c7bbf2e6a5bb2570c322936f": {
+   "union": [
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0
+   ],
+   "single": [
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "74e866137b3452ec50fb6feaf5753c8637459e62": {
+   "union": [
+    0.5,
+    1.0,
+    0.5
+   ],
+   "single": [
+    0.5,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "184b0082e10ce191940c1d24785b631828a9f714": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "b962cc817a4baf6c56150f0d97097f18ad6cd9ed": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "fb5fb11e7d01b9f9efe3db3417b8faf4f8d6931f": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "52f8a3e3cd5d42126b5307adc740b71510a6bdf5": {
+   "union": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "single": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "2236386729105f5cf42f73cc055ce3acdea2d452": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "18942ab8c365955da3fd8fc901dfb1a3b65c1be1": {
+   "union": [
+    1.0,
+    1.0,
+    0.25
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.25
+   ],
+   "label": "success"
+  },
+  "2c6b50877133a499502feb79a682f4023ddab63e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "f651cd144b7749e82aa1374779700812f64c8799": {
+   "union": [
+    0.0,
+    0.5,
+    0.14285714285714285
+   ],
+   "single": [
+    0.0,
+    0.5,
+    0.14285714285714285
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "4625cfba3083346a96e573af5464bc26c34ec943": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "326588b1de9ba0fd049ab37c907e6e5413e14acd": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "ebf0d9f9260ed61cbfd79b962df3899d05f9ebfb": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "55507f066073b29c1736b684c09c045064053ba9": {
+   "union": [
+    0.1111111111111111,
+    0.2222222222222222,
+    0.5
+   ],
+   "single": [
+    0.1111111111111111,
+    0.2222222222222222,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "e838275bb0673fba0d67ac00e4307944a2c17be3": {
+   "union": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "single": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "8dda1ef371933811e2a25a286529c31623cca0c6": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "b3de9357c569fb1454be8f2ac5fcecaea295b967": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "59e58c6fc63cf5b54b632462465bfbd85b1bf3dd": {
+   "union": [
+    1.0,
+    1.0,
+    0.2
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "success"
+  },
+  "692c9c5d9ff9cd3e0ce8b5e4fa68dda9bd23dec1": {
+   "union": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "single": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "935d6a6187e6a0c9c0da8e53a42697f853f5c248": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "3b77b4defc8a139992bd0b07b5cf718382cb1a5f": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "01a41c0a4a7365cd37d28690735114f2ff5229f2": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "7793805982354947ea9fc742411bec314a6998f6": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "72ed5fed07ace5e3ffe9de6c313625705bc8f0c7": {
+   "union": [
+    0.0,
+    1.0,
+    0.1
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.1
+   ],
+   "label": "success"
+  },
+  "aef607d2ac46024be17b1ddd0ed3f13378c563a6": {
+   "union": [
+    0.5,
+    1.0,
+    1.0
+   ],
+   "single": [
+    0.5,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "93beae291b455e5d3ecea6ac73b83632a3ae7ec7": {
+   "union": [
+    0.3333333333333333,
+    0.6666666666666666,
+    0.5
+   ],
+   "single": [
+    0.3333333333333333,
+    0.6666666666666666,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "6c91d44d5334a4ac80100eead4e105d34e99a284": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "b249b60a8c94d0e40d65f1ffdfcac527dab57516": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "0f567251a6566f65170a1329eeeb5105932036b2": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "4aa9b60c0ccd379c6fb089c84a6c7b872ee9ec4f": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "60ce4868af45753c9e124e64e518c32376f12694": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "da9c0637623885afaf023a319beee87898948fe9": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "8a1c0ef69b6022a0642ca131a8eacb5c97016640": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "48088a842f7a433d3290eb45eb0d4c6ab1d8f13c": {
+   "union": [
+    0.08333333333333333,
+    0.08333333333333333,
+    0.5
+   ],
+   "single": [
+    0.08333333333333333,
+    0.08333333333333333,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "4907096cf16d506937e592c50ae63b642da49052": {
+   "union": [
+    0.0,
+    1.0,
+    0.1
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.1
+   ],
+   "label": "success"
+  },
+  "c7eb71683f53ab7acffd691a36cad6edc7f5522e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "17a1eff7993c47c54eddc7344e7454fbe64191cd": {
+   "union": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "label": "success"
+  },
+  "a5e5cda1f6195ab1336855f1e39a609d61326d62": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "32d99dcd8d46e2cda04a9a9fa0e6693d2349a7a9": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "dd20d93166c14f1e57644cd7fa7b5e5738025cd0": {
+   "union": [
+    0.25,
+    0.25,
+    0.3333333333333333
+   ],
+   "single": [
+    0.25,
+    0.25,
+    0.3333333333333333
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "dc2a2c177cd5df6da5d03e6e74262bf424850ec9": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "ae90c5567746fe25af2fcea0cc5f355751e05c71": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "d7644c674887ca9708eb12107acd964ae53b216d": {
+   "union": [
+    0.2,
+    0.2,
+    0.3333333333333333
+   ],
+   "single": [
+    0.2,
+    0.2,
+    0.3333333333333333
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "0d9fcc715dee0ec85132b3f4a730d7687b6a06f4": {
+   "union": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "single": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "8910ee2236a497c92324bbbc77c596dba39efe46": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "2c59528b6bc5b5dc28a7b69b33594b274908cca6": {
+   "union": [
+    0.0,
+    0.5,
+    0.16666666666666666
+   ],
+   "single": [
+    0.0,
+    0.5,
+    0.16666666666666666
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "bc01853512eb3c11528e33003ceb233d7c1d7038": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "ba539cab80d25c3e20f39644415ed48b9e4e4185": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "4dc268e3d482e504ca80d2ab514e68fd9b1c3af1": {
+   "union": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "label": "success"
+  },
+  "ab54cd2dc83141bad3cb3628b3f0feee9169a556": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "boundary_split"
+  },
+  "249c805ee6f2ebe4dbc972126b3d82fb09fa3556": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "b4f881331b975e6e4cab1868267211ed729d782d": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "79413ff5d98957c31866f22179283902650b5bb6": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "29c014baf99fb9f40b5171aab3e2c7f12a748f79": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "2cd37743bcc7ea3bd405ce6d91e79e5339d7642e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "eac9dae3492e17bc49c842fb566f464ff18c049b": {
+   "union": [
+    0.0,
+    1.0,
+    0.125
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.125
+   ],
+   "label": "success"
+  },
+  "7697baf8d8d582c1f664a614f6332121061f87db": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "1cb100182508cf55b3509283c0e2bbcd527d625e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "d6401cece55a14d2a35ba797a0878dfe2deabedc": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "fde700d5134a9ae8f7579bea1f1b75f34d7c1c4c": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "f9edd8f9c13b54d8b1253ed30e7decc1999602da": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "30af1926559079f59b0df055da76a3a34df8336f": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "81d193672090295e687bc4f4ac1b7a9c76ea35df": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "cf171fad0bea5ab985c53d11e48e7883c23cdc44": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "2a564b092916f2fabbfe893cf13de169945ef2e1": {
+   "union": [
+    0.0,
+    1.0,
+    0.125
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.125
+   ],
+   "label": "success"
+  },
+  "0d34c0812f1e69ea33f76ca8c24c23b0415ebc8d": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "73e83c54251f6a07744413ac8b8bed6480b2294f": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "3355918bbdccac644afe441f085d0ffbbad565d7": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "e48e750743aef36529fbea4328b8253dbe928b4d": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "c08aab979dcdc8f4fe8ec1337c3c8290ab13414e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "8756b7b9ff5e87e4efdf6c2f73a0512f05b5ae3f": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "e374169ee10f835f660ab8403a5701114586f167": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "82595ca5d11e541ed0c3353b41e8698af40a479b": {
+   "union": [
+    0.75,
+    0.75,
+    0.5
+   ],
+   "single": [
+    0.75,
+    0.75,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "d4db7df65aa4ece63e1de813e5ce98ce1b4dbe7f": {
+   "union": [
+    0.6666666666666666,
+    0.6666666666666666,
+    0.5
+   ],
+   "single": [
+    0.6666666666666666,
+    0.6666666666666666,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "8060a773f6a136944f7b59758d08cc6f2a59693b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "c0af8b7bf52dc15e0b33704822c4a34077e09cd1": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "64af7f5c109ed10eda4fb1b70ecda21e6d5b96c8": {
+   "union": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "single": [
+    0.5,
+    0.5,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "b0a18628289146472aa42f992d0db85c200ec64b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "72ce05546c81ada05885026470f4c8c218805055": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "aa2948209cc33b071dbf294822e72bb136678345": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "d9412dda3279729e95fcb35cbed09e61577a896e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "41b70699514703820435b00efbc3aac4dd67560a": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "e3c9e4bc7bb93461856e1f4354f33010bc7d28d5": {
+   "union": [
+    0.2,
+    0.2,
+    0.25
+   ],
+   "single": [
+    0.2,
+    0.2,
+    0.25
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "06cc8fcafc0880cf69a2514bb7341642b9833041": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "d650101712e36594bd77b45930a990402a455222": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "fa30a938b58fc05131c3854f12efe376cbad887f": {
+   "union": [
+    1.0,
+    1.0,
+    0.2
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.2
+   ],
+   "label": "success"
+  },
+  "f875337f2ecd686cd7789e111174d0f14972638d": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "de53af4eddbc30c808d90b8a11a29217d377569e": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "success"
+  },
+  "f03112b868b658c954db62fc64430bebbaa7d9e0": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "a6d3e57de796172c236e33a6ceb4cca793dc2315": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "395b61d368e8766014aa960fde0192e4196bcb85": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "92bb41cf7bd1f7886784796a8220ed5aa07bc49b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "4ef11518b40cc55d86c485f14e24732123b0d907": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "6a219d7c58451842aa5d6819a7cdf51c55e9fc0f": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "cee8cfaf26e49d98e7d34fa1b414f8f31d6502ad": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "f8f4e4a50d2b3fbd193327e79ea32d8d057e1414": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "bc84c5a58c57038910f7720d7a784560054d3e1a": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "29923a824c98b3ba85ced964a0e6a2af35758abe": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "8dc707a0daf7bff61a97d9d854283e65c0c85064": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "559920ebe19e99e43418c2f0455a0ffdc8edaaa2": {
+   "union": [
+    0.5,
+    0.5,
+    0.3333333333333333
+   ],
+   "single": [
+    0.5,
+    0.5,
+    0.3333333333333333
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "68cd8433a75eee7d100dbbfedebbf53873a21720": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "3c3807f226ba72fc41f59f0338f12a49a0c35605": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "c70bafc35e27be9d1efae60596bc0dd390c124c0": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "81d607fc206198162faa54a796717c2805282d9b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "51fe4d44887c5cc5fc98b65ca4cb5876f0a56dad": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "f0848e7a339da0828278f6803ed7990366c975f0": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "2740e3d7d33173664c1c5ab292c7ec75ff6e0802": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "db72a78a7102b5f0e75a4d9e1a06a3c2e7aabb21": {
+   "union": [
+    0.0,
+    0.5,
+    0.1111111111111111
+   ],
+   "single": [
+    0.0,
+    0.5,
+    0.1111111111111111
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "48bd71477d5f89333fa7ce5c4556e4d950fb16ed": {
+   "union": [
+    0.0,
+    1.0,
+    0.16666666666666666
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.16666666666666666
+   ],
+   "label": "success"
+  },
+  "76ed74788e3eb3321e646c48ae8bf6cdfe46dca1": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "56b7319be68197727baa7d498fa38af0a8440fe4": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "2268c9044e868ba0a16e92d2063ada87f68b5d03": {
+   "union": [
+    0.2,
+    0.2,
+    0.5
+   ],
+   "single": [
+    0.2,
+    0.2,
+    0.5
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "a1ac2a152710335519c9a907eec60d9f468b19db": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "348886b4762db063711ef8b7a10952375fbdcb57": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "1ed49a8c07ef0ac15cfa6b7decbde6604decbd5b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "9b4dc790e4ff49562992aae4fad3a38621fadd8b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "a1dac888f63c9efaf159d9bdfde7c938636f07b1": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "c74185bced810449c5f438f11ed6a578d1e359b4": {
+   "union": [
+    0.3333333333333333,
+    0.3333333333333333,
+    1.0
+   ],
+   "single": [
+    0.3333333333333333,
+    0.3333333333333333,
+    1.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "88e5d37617e14d6976cc602a168332fc23644f19": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "70148c8d0f345ea36200d5ba19d021924d98e759": {
+   "union": [
+    0.5,
+    1.0,
+    0.5
+   ],
+   "single": [
+    0.5,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "cf874cd9023d901e10aa8664b813d32501e7e4d2": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "42084c41343e5a6ae58a22e5bfc5ce987b5173de": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "72e4e26d0dd79c590c28b10938952a9f9497ff1e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "58ee0cbf1d8e3711c617b1cd3d7aca8620e26187": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "f71b52e00e0be80c926f153b9fe0a06dd93af11e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "54e945ea4b014e11ed4e1e61abc2aa9e68fea310": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "df0257ab04686ddf1c6c4d9b0529a7632330b98e": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "boundary_split"
+  },
+  "568fb7989a133564d84911e7cb58e4d8748243ef": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "boundary_split"
+  },
+  "2c947447d81252397839d58c75ebcc71b34379b5": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "c01784b995f6594fdb23d7b62f20a35ae73eaa77": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "boundary_split"
+  },
+  "3415762847ed13acc3c90de60e3ef42612bc49af": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "223dc2b9ea34addc0f502003c2e1c1141f6b36a7": {
+   "union": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.5
+   ],
+   "label": "success"
+  },
+  "8e44c02c2d9fa56fb74ace35ee70a5add50b52ae": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "1522ccedbb1f668958f24cca070f640274bc2549": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "97466a37525536086ed5d6e5ed143df085682318": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "e9cfbfdf30e48cffdeca58d4ac6fdd66a8b27d7a": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "d6191c4643201262a770947fc95a613f57bedb6b": {
+   "union": [
+    0.0,
+    1.0,
+    0.16666666666666666
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.16666666666666666
+   ],
+   "label": "success"
+  },
+  "ffeb67a61ecd09542b1c53c3e4c3abd4da0496a8": {
+   "union": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.3333333333333333
+   ],
+   "label": "success"
+  },
+  "7006c66a15477b917656f435d66f63760d33a304": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "a15bc19674d48cd9919ad1cf152bf49c88f4417d": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "92d1a6df3041667dc662376938bc65527a5a1c3c": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "12159f04e0427fe33fa05af6ba8c950f1a5ce5ea": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "a4a1fcef760b133e9aa876ac28145ad98a609927": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "63bb2040fa107c5296351c2b5f0312336dad2863": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "c1c44fd96c3fa6e16949ae8fa453e511c6435c68": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "d28d86524292506d4b24ae2d486725a6d57a3db3": {
+   "union": [
+    0.0,
+    1.0,
+    0.1
+   ],
+   "single": [
+    0.0,
+    1.0,
+    0.1
+   ],
+   "label": "success"
+  },
+  "feafcc1c4026d7f55a2c8ce7850d7e12030b5c22": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "5c6fa86757410aee6f5a0762328637de03a569e9": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "7e38e0279a620d3df05ab9b5e2795044f18d4471": {
+   "union": [
+    0.0,
+    0.5,
+    0.125
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "9cf070d6671ee4a6353f79a165aa648309e01295": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "87bc6f83f7f90df3c6c37659139b92657c3f7a38": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "bd419f4094186a5ce74ba6ac1622b24e29e553f4": {
+   "union": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "single": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "label": "success"
+  },
+  "11e8bd4abf5f8bdabad3e8f0691e6d0ad6c326af": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "981fd79dd69581659cb1d4e2b29178e82681eb4d": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "not_found"
+  },
+  "03e9ac1a2d90152cd041342a11293a1ebd33bcc3": {
+   "union": [
+    1.0,
+    1.0,
+    0.25
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.25
+   ],
+   "label": "success"
+  },
+  "73906462bd3415f23d6378590a5ba28709b17605": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "5bc1dc6ebcb88fd0310b21d2a74939e35a4c1a11": {
+   "union": [
+    0.0,
+    0.5,
+    0.1
+   ],
+   "single": [
+    0.0,
+    0.5,
+    0.1
+   ],
+   "label": "incomplete_multi_evidence"
+  },
+  "88bf368491f9613767f696f84b4bb1f5a7d7cb48": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "0737954caf66f2b4c898b356d2a3c43748b9706b": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "664b3eadc12c8dde309e8bbd59e9af961a433cde": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "b3307d5b68c57a074c483636affee41054be06d1": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "bfc1de5fa4da2f0e301fd22aea19cf01e2bb5b31": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "08b57deb237f15061e4029b6718f1393fa26acce": {
+   "union": [
+    1.0,
+    1.0,
+    0.2
+   ],
+   "single": [
+    1.0,
+    1.0,
+    0.2
+   ],
+   "label": "success"
+  },
+  "9b7655d39c7a19a23eb8944568eb5618042b9026": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "cd06d775f491b4a17c9d616a8729fd45aa2e79bf": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "1329280df5ee9e902b2742bde4a97bc3e6573ff3": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "ranked_too_low"
+  },
+  "58c6737070ef559e9220a8d08adc481fdcd53a24": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "49c32a2a64eb41381e5f12ccea4150cac9f3303d": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  },
+  "bbb77f2d6685c9257763ca38afaaef29044b4018": {
+   "union": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "single": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "wrong_paper"
+  }
+ }
+}
