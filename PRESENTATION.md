@@ -517,7 +517,151 @@ time was spent finishing those rather than steps 5–7. That is the entire, hone
 
 ---
 
-## 10. Does the task ask for a demo?
+## 10. Algorithm deep-dives — how each one actually works (question prep)
+
+§9.5 explains *why each technique was wanted* and its status. This section is the
+"walk me through it" material: how the algorithm runs, step by step, for every method
+in the brief and the experiment bank. **BUILT** = ran in our results; **PLANNED** = in
+the bank, not built (honest status). IVF/HNSW mechanics are in §9.2.
+
+### 10.1 BM25 — step by step (**BUILT**, `bm25.py`)
+
+1. **Tokenize** — lowercase, keep `[a-z0-9]+` runs, drop a custom stopword list.
+2. **Fit** — inverted index `term → [(doc_id, tf)]`, plus doc lengths `dl`, average
+   `avgdl`, and corpus size `N`.
+3. **IDF per term** — rare words are worth more:
+   `idf = ln(1 + (N − df + 0.5)/(df + 0.5))`.
+4. **Score each document** — sum over the query terms:
+   `idf × tf·(k1+1) / (tf + k1·(1 − b + b·dl/avgdl))` with **k1 = 1.2** (term-frequency
+   saturation) and **b = 0.75** (length normalization).
+
+**Worked example** (N = 100 documents; tf = 3, dl = avgdl → tf-factor 6.6/4.2 = 1.57):
+
+| Situation | idf | document score contribution |
+|---|---:|---:|
+| rare word, df = 2 (`BERTbase`) | ln(40.4) = 3.70 | **5.81** |
+| common word, df = 50 (`model`) | ln(2) = 0.69 | **1.09** |
+| rare word, but doc is 2× avgdl | 3.70 | **4.79** (long-doc discount) |
+| rare word, tf = 10 instead of 3 | 3.70 | **7.27** (3× mentions → only +25%) |
+
+Why it complements dense: exact tokens like `BERTbase`, dataset names or error codes
+match literally — embeddings blur them. No vectors, no model: a pure Python/NumPy pass,
+which is the ~370 ms B adds over the 13 ms baseline.
+
+### 10.2 RRF — rank voting (**BUILT**, `fusion.py`)
+
+- `score(d) = Σ 1/(60 + rank(d))` over the input lists, ranks start at 1; highest sum
+  wins.
+- **Only ranks are read**, so cosine (0–1) and BM25 (unbounded scale) merge with zero
+  calibration — the reason two different retrievers can be fused at all.
+- Worked: dense #1 + BM25 #5 → `1/61 + 1/65 = 0.0318`; a doc that is #3 in both →
+  `2/63 = 0.0317` — nearly tied: *consistently decent beats great-in-one-list*.
+- `k = 60` flattens the scale (rank 1 → 0.0164, rank 10 → 0.0143), so agreement across
+  retrievers matters more than one lucky #1.
+
+### 10.3 Cross-encoder scoring — mechanics (**BUILT**, `rerank.py`)
+
+1. **One input sequence**: `[CLS] question [SEP] passage [SEP]` → a single forward pass;
+   question and passage tokens attend to each other in **every** layer.
+2. **One number out**: a small head trained on MS MARCO passage ranking scores the pair.
+3. **What it reorders**: the head of the ranking — `rerank_pool = 30` of the fused
+   top-50 — sorted by score, ties keep the old order; positions 31–50 are untouched
+   (`rerank_lists`).
+4. **What text is scored**: `embed_text`, so optimization A's title/heading prefix helps
+   here too. Truncated at 512 tokens, batched at 32.
+5. **Cost control**: every (query, passage) score is cached to disk
+   (`.cache/ce_*.npz`, key = SHA-1 of query + separator + text) — re-runs and repeated
+   questions score nothing new.
+
+**Bi-encoder contrast**: two separate forward passes → pooled vectors → one dot product;
+document vectors are precomputed (`.cache/emb_*.npz`), which is exactly why dense search
+is 13 ms while the cross-encoder costs seconds.
+
+### 10.4 HyDE — hypothetical documents (**PLANNED**, `hyde`, 1 LLM call/q)
+
+1. Ask the LLM to **answer the question as if writing a passage** (temperature 0). The
+   answer will often be wrong — that's fine.
+2. **Embed the hypothetical answer**, not the question, with the same bi-encoder.
+3. Dense-search the real corpus for passages **nearest to that fake answer**.
+4. (Planned) **RRF-fuse** this ranking with the original question's ranking.
+
+Intuition: retrieval matches *text*, and answer-shaped text shares the paper's
+vocabulary ("we train on 500K sentences…") while questions often don't. Risk: one
+invented detail pulls every neighbour toward the wrong topic. Cost: one generation per
+query. Status: step 6 of the plan's cut line; never run.
+
+### 10.5 Multi-query + step-back (**PLANNED**, `multiq`, 1 LLM call/q)
+
+1. **One LLM call** produces several phrasings of the same need: a paraphrase, a
+   keyword-heavy version, and a *step-back* — the broader, general question behind it.
+2. **Embed each** variant and run dense retrieval for all of them.
+3. **RRF-fuse** every list (variants + the original).
+
+Intuition: recall insurance — if the embedding dislikes your wording, another phrasing
+may land; the step-back helps when the question quotes a detail the paper frames
+generally. Cost: one call plus a few millisecond-scale searches per query. Status:
+step 6 of the cut line; never run.
+
+### 10.6 MMR + overlap dedup (**PLANNED**, `mmr`, 0 LLM calls)
+
+- **MMR**: build the list one item at a time; the next pick maximizes
+  `λ·sim(query, d) − (1−λ)·max sim(d, already chosen)`. λ = 1 is plain top-k; λ ≈ 0.5
+  forces diversity by penalising near-copies of what is already selected.
+- **Overlap dedup** (the cheap half): drop any chunk whose `source_spans` overlap
+  **> 50%** with an already-selected, higher-ranked chunk.
+- Why it mattered: the baseline top-10 had **3.0 of 10 chunks overlapping another** —
+  duplicates crowd out complementary evidence, which is exactly
+  `incomplete_multi_evidence` (11.5% of dev failures).
+- Zero LLM cost; would run at the selection stage, after fusion/rerank. Status: step 5
+  of the cut line; never run.
+
+### 10.7 LLM contextual enrichment (**PLANNED**, `ctx`, 1 LLM call/chunk)
+
+1. At **ingestion**, the LLM writes one sentence: "what this chunk is about".
+2. **Prepend it to the indexing text only** (embed/BM25 input) — the returned text stays
+   untouched, so `source_spans` remain exact.
+3. Embed the enriched version.
+
+Why: chunks like "this approach achieves 91 F1" are meaningless alone — a label
+restores who "this approach" is. Cost: one LLM call **per chunk** at ingestion
+(thousands of calls — the most expensive item, which is why the plan scheduled it last,
+step 7). Status: never run.
+
+### 10.8 Small-to-big (**PLANNED**, `s2b`, 0 LLM calls)
+
+1. **Index small units** (2–3 sentences) — short text matches a query precisely.
+2. Each unit stores its **parent paragraph id**.
+3. Retrieval ranks the small units; a hit **returns the parent** — full context for the
+   ≥80% coverage rule and for the answer.
+
+It splits *finding precision* from *explaining context*. Optimization A already covers
+part of it (merges short paragraphs ≤ 300 chars, never splits mid-sentence). Status:
+step 5 of the cut line; never run (more detail in `docs/02_chunking.md`).
+
+### 10.9 Semantic chunking (**PLANNED**, 0 LLM calls)
+
+1. Split into sentences and **embed each** (or each adjacent pair).
+2. Compare **neighbouring sentences** by cosine similarity.
+3. **Cut where similarity dips** — the meaning changed there — instead of at a fixed size.
+
+Attractive because chunks follow meaning; costs an extra embedding pass at ingestion and
+produces uneven sizes, which can push gold paragraphs across chunk edges — the very
+failure fixed-window chunking causes. Status: listed under chunking options in
+`docs/02_chunking.md`; never built.
+
+### 10.10 IVF and HNSW — mechanics in §9.2 (**PLANNED**, not built)
+
+Covered step-by-step in §9.2 (IVF: k-means cells + `nprobe`; HNSW: layered proximity
+graph + `efSearch`), with the honest skip-reason in §9.3. One-line versions:
+
+- **IVF** = cluster vectors with k-means, search only the `nprobe` nearest clusters →
+  faster, may miss true neighbours in unprobed clusters.
+- **HNSW** = layered graph of nearest neighbours, greedy walk from the top layer down →
+  logarithmic-scale lookup with tunable recall.
+
+---
+
+## 11. Does the task ask for a demo?
 
 **No.** The brief's deliverables are: the seven JSONL files, the code + README with
 settings/reproducible switches, a 10-question failure table, the ablation table, the
@@ -529,7 +673,7 @@ failure you fixed," otherwise the tables + reflection are sufficient.
 
 ---
 
-## 11. Ready-to-say summary (closing slide)
+## 12. Ready-to-say summary (closing slide)
 
 ```text
 1. Built a naive RAG retriever over QASPER (80 dev / 50 held-out, seed 42).

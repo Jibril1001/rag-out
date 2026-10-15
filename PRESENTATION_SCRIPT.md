@@ -3,6 +3,8 @@
 This is the file you speak from: the word-for-word script, the 5-slide layout, and the
 short Q&A. `PRESENTATION.md` has the deep detail; this is what you actually say. Every
 number below is taken from the repo's measured results, so nothing here is invented.
+If they ask you to *walk through an algorithm* (BM25, HyDE, MMR, cross-encoder…), the
+step-by-step mechanics are in `PRESENTATION.md` §10.
 
 ---
 
@@ -214,6 +216,58 @@ RERANK (cross-enc)   -> makes RANKING better -> built:  rerank.py, top-30
 > `k1=1.2`, `b=0.75`. There's no `rank_bm25` import anywhere — the brief required writing
 > it from scratch, and the tests in `tests/test_structure_bm25_pipeline.py` check the
 > scoring behavior."
+
+### Q5 — "Walk me through how BM25 scores a document."
+
+> "Four steps. One: tokenize — lowercase, keep letters and digits, drop my stopword
+> list. Two: build an inverted index — every word maps to the documents containing it,
+> with term frequency, document length and average length. Three: give each word an IDF
+> score — rare words are worth more: `idf = ln(1 + (N − df + 0.5)/(df + 0.5))`. Four:
+> score each document as the sum over query words of `idf × tf·(k1+1) / (tf +
+> k1·(1 − b + b·dl/avgdl))`, with k1 = 1.2 and b = 0.75. Two things happen there:
+> term frequency saturates — ten mentions aren't ten times better than one — and long
+> documents get discounted. Example: in 100 documents, a word in 2 of them scores IDF
+> 3.70, the same word in 50 documents only 0.69. That's how exact names like `BERTbase`
+> beat generic topic words."
+
+### Q6 — "How does your RRF fuse dense and BM25?"
+
+> "By position only. Every document gets `1/(60 + rank)` from each list and they are
+> added up — highest sum wins. A document that is #1 for dense and #5 for BM25 gets
+> 1/61 + 1/65 ≈ 0.032. Because only ranks are used, cosine scores and BM25 scores —
+> two completely different scales — merge with no calibration at all. And k = 60
+> flattens the scale, so being solidly in both lists beats being number one in only one."
+
+### Q7 — "How is the cross-encoder mechanically different from the bi-encoder?"
+
+> "A bi-encoder runs two separate passes — question to a vector, document to a vector —
+> then compares them with one dot product. I can precompute every document vector once,
+> which is why dense search is 13 milliseconds. A cross-encoder takes one input —
+> `[CLS] question [SEP] passage [SEP]` — and in a single forward pass the question's
+> words and the passage's words attend to each other in every layer, then one small head
+> outputs a relevance number. Much sharper, but nothing can be precomputed: every pair
+> has to be scored live. That's exactly why I only give it the top 30 candidates."
+
+### Q8 — "What are HyDE and multi-query? Why didn't you run them?"
+
+> "Both change the *query*, not the index. HyDE: you ask the LLM to answer the question
+> as if writing a passage — the answer is probably wrong, but its vocabulary matches the
+> real papers, so you embed that hypothetical answer and search near it, then fuse it
+> with the normal ranking. Multi-query: one LLM call rewrites the question into a few
+> versions — a paraphrase, keywords, and a broader step-back question — you search with
+> each and fuse everything with RRF. Both cost one LLM call per question. They're steps
+> 6 in my plan; time ran out after the mandatory work, and A/B/C attack the same
+> `wrong_paper` failure for free — no calls per query."
+
+### Q9 — "What would MMR have changed?"
+
+> "MMR picks results one at a time: each next pick maximizes `λ·sim(query, d) −
+> (1−λ)·max sim(d, already picked)`, so near-duplicates get penalized. The problem it
+> targets is real in my data: the baseline top-10 had 3 of 10 chunks overlapping another
+> one — duplicates crowd out the missing evidence, which is `incomplete_multi_evidence`,
+> 11.5% of dev failures. The cheap half alone — drop any chunk whose source spans overlap
+> more than 50% with a higher-ranked one — needs no LLM and would be a natural next step.
+> It's in the plan, step 5; not built."
 
 ---
 
