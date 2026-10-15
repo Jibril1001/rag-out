@@ -184,7 +184,7 @@ All retrieval metrics use the 80%-token-coverage rule on the target paper only. 
 ### Independent ablation (development, 261 questions with gold evidence)
 
 | Configuration | R@5 | R@10 | MRR@10 | Median retrieval latency | LLM calls/q |
-|---|---|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|---:|
 | Baseline (fixed chunks + dense) | 0.153 | 0.212 | 0.124 | 13 ms | 0 |
 | Baseline + A (structure + context) | 0.195 | 0.287 | 0.146 | 14 ms | 0 |
 | Baseline + B (dense + BM25, RRF) | 0.161 | 0.255 | 0.141 | 386 ms | 0 |
@@ -201,7 +201,7 @@ Union coverage. LLM calls are zero for development because generation is only re
 ### Final development vs held-out
 
 | Split | Configuration | Coverage | R@5 | R@10 | MRR@10 |
-|---|---|---|---|---:|---:|---:|
+|---|---|---|---:|---:|---:|
 | Development | Baseline | Union | 0.153 | 0.212 | 0.124 |
 | Development | Final | Union | 0.246 | 0.354 | 0.230 |
 | Development | Baseline | Single | 0.128 | 0.174 | 0.111 |
@@ -218,7 +218,7 @@ Held-out n = 155 questions with gold evidence (of 182). The final system's gains
 Answers were generated for the fixed 20-question sample with `gemini-3.5-flash-lite` (temperature 0) using identical grounded prompts for baseline and final. Scoring uses QASPER-style normalized answer F1: token-level F1 over lowercased, punctuation-stripped, article-removed answers, max over annotator references.
 
 | System | Answer F1 (all 20) | Answer F1 (19 answerable) | Abstained | Gold-unanswerable | False-answer rate |
-|---|---|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|---:|
 | Baseline | 0.157 | 0.113 | 9/20 | 1 | 0.0 (n=1) |
 | Final | 0.203 | 0.161 | 9/20 | 1 | 0.0 (n=1) |
 

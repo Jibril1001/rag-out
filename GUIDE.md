@@ -237,7 +237,7 @@ Three changes, three stages (ingestion, retrieval, ranking) — satisfying the b
 ### 7.1 Independent ablation (dev, 261 questions, union coverage)
 
 | Configuration | R@5 | R@10 | MRR@10 | Median retrieval latency | LLM calls/q |
-|---|---|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|---:|
 | Baseline (fixed + dense) | 0.153 | 0.212 | 0.124 | 13 ms | 0 |
 | + A (structure + context) | 0.195 | 0.287 | 0.146 | 14 ms | 0 |
 | + B (dense + BM25, RRF) | 0.161 | 0.255 | 0.141 | 386 ms | 0 |
@@ -254,7 +254,7 @@ Reading the table:
 ### 7.2 Development vs held-out (union and single)
 
 | Split | Config | Coverage | R@5 | R@10 | MRR@10 |
-|---|---|---|---|---:|---:|---:|
+|---|---|---|---:|---:|---:|
 | Dev | Baseline | Union | 0.153 | 0.212 | 0.124 |
 | Dev | Final | Union | 0.246 | 0.354 | 0.230 |
 | Dev | Baseline | Single | 0.128 | 0.174 | 0.111 |
@@ -270,7 +270,7 @@ smaller than on dev — what you want to see, since held-out was never tuned.
 ### 7.3 Answer generation (20 held-out questions)
 
 | System | Answer F1 (all 20) | Answer F1 (19 answerable) | Abstained | Gold-unanswerable | False-answer rate |
-|---|---|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|---:|
 | Baseline | 0.157 | 0.113 | 9/20 | 1 | 0.0 (n=1) |
 | Final | 0.203 | 0.161 | 9/20 | 1 | 0.0 (n=1) |
 

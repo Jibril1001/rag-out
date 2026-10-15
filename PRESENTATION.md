@@ -275,7 +275,7 @@ Answers (the 20) are scored in `scripts/score_answers.py` with **normalized answ
 ### 7.1 The required ablation table (dev, union coverage)
 
 | Configuration | R@5 | R@10 | MRR@10 | Median retrieval latency | LLM calls/q |
-|---|---|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|---:|
 | Baseline (fixed + dense) | 0.153 | 0.212 | 0.124 | 13 ms | 0 |
 | + A (structure + context) | 0.195 | 0.287 | 0.146 | 14 ms | 0 |
 | + B (dense + BM25, RRF) | 0.161 | 0.255 | 0.141 | 386 ms | 0 |
@@ -289,7 +289,7 @@ measure — **+0.142 recall and +0.106 MRR** over baseline."
 ### 7.2 Development vs held-out (the honest check)
 
 | Split | Config | Coverage | R@5 | R@10 | MRR@10 |
-|---|---|---|---|---:|---:|---:|
+|---|---|---|---:|---:|---:|
 | Dev | Baseline | Union | 0.153 | 0.212 | 0.124 |
 | Dev | Final | Union | 0.246 | 0.354 | 0.230 |
 | Held-out | Baseline | Union | 0.169 | 0.234 | 0.140 |
@@ -301,7 +301,7 @@ held-out was never used for tuning."
 ### 7.3 Answers (20 questions) and cost
 
 | System | Answer F1 (all 20) | Abstained | Gold-unanswerable | False-answer rate |
-|---|---|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|
 | Baseline | 0.157 | 9/20 | 1 | 0.0 (n=1) |
 | Final | 0.203 | 9/20 | 1 | 0.0 (n=1) |
 

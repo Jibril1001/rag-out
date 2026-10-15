@@ -152,7 +152,7 @@ RERANK (cross-enc)   -> makes RANKING better -> built:  rerank.py, top-30
 ### Slide 4 — A / B / C + the table
 
 | Configuration | R@5 | R@10 | MRR@10 | Median search time | LLM calls/q |
-|---|---|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|---:|---:|
 | Baseline (fixed + dense) | 0.153 | 0.212 | 0.124 | 13 ms | 0 |
 | + A (structure + context) | 0.195 | 0.287 | 0.146 | 14 ms | 0 |
 | + B (dense + BM25, RRF) | 0.161 | 0.255 | 0.141 | 386 ms | 0 |
