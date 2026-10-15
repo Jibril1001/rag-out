@@ -13,16 +13,14 @@ Two other files complement this one:
 
 ## 0. The 30-second version (say this first)
 
-> "I built a **naive RAG retriever** for QASPER, diagnosed **why it failed**, tested
-> **three independent optimizations** across three stages, and showed which changes
-> actually help. The key result: the final system lifts retrieval recall from
-> **21.2% to 35.4%** on the development split, and from **23.4% to 33.9%** on
-> held-out — measured with gold-evidence coverage, not vibes. Every gain is reported
-> next to its cost in latency and LLM calls."
+> "I built a **simple RAG retriever** for QASPER, found out **why it failed**, tested
+> **three changes** across three stages, and showed which ones actually help. The key
+> result: the final system lifts retrieval recall from **21.2% to 35.4%** on the
+> development split, and from **23.4% to 33.9%** on held-out — measured with real gold
+> evidence, not vibes. Every gain is shown next to its cost in time and LLM calls."
 
-The controlling principle of the whole task is **retrieval-first,
-measure-don't-assume**: a fluent LLM answer tells you nothing if the right evidence
-never reached the prompt.
+The rule behind the whole task is **fix retrieval first, and measure everything**: a
+fluent answer means nothing if the right evidence never reached the model.
 
 ---
 
@@ -104,9 +102,10 @@ flags — which is exactly the "reproducible switches" the brief asks for.
 
 ### 4.1 Prepare the evidence — chunking (field-guide §02)
 
-**The concept.** Chunking decides what a search result can explain *on its own*.
-Fixed windows are simple but can cut a paragraph in the middle, splitting a method
-from its result. Structure-aware chunking follows headings/paragraphs/sections.
+**The concept.** Chunking decides what one search result can explain *by itself*.
+Fixed windows are simple, but they can cut a paragraph in half — separating a method
+from its result. Structure-aware chunking follows headings, paragraphs and sections
+instead.
 
 **What I built.**
 
@@ -122,19 +121,19 @@ from its result. Structure-aware chunking follows headings/paragraphs/sections.
   - when `context=True`, the **embedded** text becomes `title | section heading + chunk`
     while the **returned** text stays the original paragraph (so spans stay exact).
 
-**Why A works (theory).** Two effects: (1) *boundary snapping* keeps a gold paragraph
-inside one chunk so it can reach the 80% coverage threshold; (2) the title/heading
-context gives the encoder a signal to **disambiguate papers** that talk about the
-same topic — this attacks the 40.2% `wrong_paper` problem directly.
+**Why A works.** Two effects: (1) *boundary snapping* keeps a gold paragraph inside one
+chunk, so it can reach the 80% coverage rule; (2) the title and heading give the model
+a signal to **tell papers apart** when they talk about the same topic — this attacks the
+40.2% `wrong_paper` problem directly.
 
 **Numbers to say:** A alone lifts R@10 from 0.212 → **0.287** at nearly zero cost
 (14 ms vs 13 ms).
 
 ### 4.2 Embed and organize — represent the text as vectors (§04)
 
-**The concept.** An *embedding model* turns text into a vector; an *index* makes
-search over many vectors fast. I must not conflate the two. "A dictionary maps a
-known key; a vector index finds *similar* vectors without knowing the ID in advance."
+**The concept.** An *embedding model* turns text into a vector; an *index* makes search
+over many vectors fast. The two must not be mixed up. "A dictionary looks up a key you
+already know; a vector index finds *similar* vectors without knowing the ID first."
 
 **What I built** — `src/ragopt/embed.py`:
 
@@ -149,16 +148,16 @@ known key; a vector index finds *similar* vectors without knowing the ID in adva
 **Index** — `src/ragopt/dense.py`: a **flat exact index** (`FlatIPIndex`) — one
 matrix multiply `query @ documentsᵀ`, top-k via `np.argpartition`.
 
-> I deliberately used **exact** search, not IVF/HNSW. At a few thousand chunks, exact
-> search is already microseconds; the query embedding and model inference dominate
-> latency, so an approximate index would add recall-vs-speed risk for ~zero benefit.
+> I chose **exact** search on purpose, not IVF/HNSW. At a few thousand chunks, exact
+> search already takes microseconds; the query embedding and the model call dominate the
+> time, so an approximate index would risk losing good results for almost no gain.
 > (See §9.)
 
 ### 4.3 Retrieve — dense, and the hybrid with BM25 (§05)
 
-**The concept.** Dense retrieval captures *meaning* ("prevent overfitting" ↔
-"regularization through dropout"). Sparse/BM25 captures *exact tokens* (names, error
-codes, dataset names). Neither is uniformly stronger.
+**The concept.** Dense search captures *meaning* ("prevent overfitting" ↔
+"regularization through dropout"). BM25 matches *exact words* (names, error codes,
+dataset names). Neither is always stronger.
 
 **What I built — `src/ragopt/bm25.py`, from scratch** (the brief forbids `rank_bm25`):
 
@@ -174,16 +173,16 @@ codes, dataset names). Neither is uniformly stronger.
 only reads *ranks*, which is exactly why two incomparable score scales (cosine vs
 BM25) can be merged.
 
-**Why B works.** Dense misses rare exact terms (`BERTbase`, `Elasticsearch`,
-dataset names). BM25 catches them but has no notion of paraphrase. Hybrid = two
-different "instincts". B alone: R@10 0.212 → **0.255** (cost: ~386 ms because of the
-BM25 pass).
+**Why B works.** Dense search misses rare exact words (`BERTbase`, `Elasticsearch`,
+dataset names). BM25 catches them but can't match paraphrases. Hybrid = two different
+"instincts". B alone: R@10 0.212 → **0.255** (cost: ~386 ms because of the BM25 pass).
 
 ### 4.4 Refine / choose candidates — cross-encoder reranking (§07)
 
-**The concept.** *Nearest is not most useful.* A bi-encoder encodes query and doc
-separately, so they never "see" each other. A **cross-encoder** concatenates
-`[query, doc]` and attends jointly → much finer relevance, but you can't precompute it.
+**The concept.** *Nearest is not most useful.* A bi-encoder turns query and document
+into vectors separately, so they never "see" each other. A **cross-encoder** puts
+`[query, doc]` together and reads them at the same time → much sharper relevance, but
+you can't precompute it.
 
 **What I built — `src/ragopt/rerank.py`:** `cross-encoder/ms-marco-MiniLM-L-6-v2`
 (truncated at 512 tokens), applied **only to reorder the top-30 candidates**. This is
@@ -197,7 +196,7 @@ most (+0.027), and it is the most expensive (~4.4 s/query).
 ### 4.5 Use the evidence — grounded generation (§08)
 
 **The concept.** Retrieval isn't enough if the model ignores the passages or invents
-claims. Grounded prompting labels each source and allows abstention.
+claims. Grounded prompting labels each source and lets the model refuse to answer.
 
 **What I built — `scripts/answer20.py`:** for the 20 questions, chunks are numbered
 `[1]–[10]` in rank order, one prompt says "answer only from the context, or
@@ -229,9 +228,9 @@ paper-confusion diagnostic : union R@10 0.212 -> 0.651
 chunking ceiling          : 1.00 union / 0.69 single  (a perfect ranker)
 ```
 
-The takeaway I present: the ceiling is high (1.00), so the *chunks* are fine; the
-loss is **retrieval** — mostly picking the wrong paper. That is why A and B target
-paper disambiguation and lexical matching, not a bigger model.
+The takeaway I present: the ceiling is high (1.00), so the *chunks* are fine; the loss
+is **retrieval** — mostly picking the wrong paper. That's why A and B target telling
+papers apart and exact-word matching, not a bigger model.
 
 The full 10-case table (question ID → problem → cause → fix) is
 [`results/failure_table.md`](results/failure_table.md).
@@ -261,9 +260,9 @@ Baseline chunk [....X....] [....X....]      union: X+X covers the paragraph  -> 
 Single: neither half reaches 80%            -> not covered
 ```
 
-Questions whose gold is only figure/table evidence (`FLOAT SELECTED …`, no paragraph
-ID, no tokens) are excluded: **261 of 295 dev** and **155 of 182 held-out** questions
-have paragraph-level gold. This is stated explicitly, not hidden.
+Questions with no paragraph-level gold (figure/table-only evidence, or unanswerable
+questions with no paragraph ID) are excluded: **261 of 295 dev** and **155 of 182
+held-out** questions have paragraph gold. This is stated openly, not hidden.
 
 Answers (the 20) are scored in `scripts/score_answers.py` with **normalized answer F1**
 (lowercase, strip punctuation + articles, token F1, max over annotators) and a
@@ -283,9 +282,9 @@ Answers (the 20) are scored in `scripts/score_answers.py` with **normalized answ
 | + C (cross-encoder top-30) | 0.191 | 0.247 | 0.151 | 4,386 ms | 0 |
 | **Final (A + B + C)** | **0.246** | **0.354** | **0.230** | 5,027 ms | 0 |
 
-**How to read it aloud:** "A is the biggest single win and nearly free; B helps a
-little but costs 30×; C helps ordering but is expensive. Combining all three wins on
-every metric — **+0.142 recall and +0.106 MRR** over baseline."
+**How to read it aloud:** "A is the biggest win and nearly free; B helps a little but
+costs 30× more time; C helps ranking but is expensive. All three together win on every
+measure — **+0.142 recall and +0.106 MRR** over baseline."
 
 ### 7.2 Development vs held-out (the honest check)
 
@@ -334,10 +333,10 @@ FINAL (structure + hybrid + rerank)
   gold paragraph: covered      -> R@10 = 1  (this question succeeds)
 ```
 
-**Why it flipped:** the baseline's dense embedding ranked a thematically-similar paper
-about "user simulation / communication" above the true paper. The final's title/heading
-context (A) + BM25 lexical match on distinctive terms (B) + cross-encoder (C) pulled
-the target paper to rank 1.
+**Why it flipped:** the baseline's dense embedding ranked a similar-sounding paper about
+"user simulation / communication" above the real one. The final's title/heading context
+(A) + BM25 matching on exact distinctive words (B) + the cross-encoder (C) pulled the
+target paper up to rank 1.
 
 A live demo you can run (in the repo):
 
@@ -430,36 +429,37 @@ Planned file locations (never created): `src/ragopt/index/ivf.py` and
 
 ### 9.3 Why I skipped IVF and HNSW (the honest, defensible reason)
 
-1. **Time — the cut line.** My plan ordered the work so the *minimum complete
-   submission* (baseline → A/B/C → the seven JSONL files → the tables) was finished
-   first; the ANN work came after it. Time ran out before the optional layer.
+1. **Time — the cut line.** I ordered the work so the *minimum complete submission*
+   (baseline → A/B/C → the seven JSONL files → the tables) was done first; the ANN work
+   came after it. Time ran out before the optional layer.
 2. **Scale — the plan predicted the outcome.** At a few thousand chunks, `FlatIPIndex`
-   is already a microseconds-scale matrix multiply, and the query-embedding / model
-   inference dominates latency (my final is ~5 s/query because of the *cross-encoder*,
-   not the index). So IVF/HNSW would give **~0 accuracy gain** and only add a
-   recall-vs-speed knob plus build cost. The plan even proposed the right experiment —
-   a **synthetic 10×/100× scale test** — because ANN only starts to matter at scale.
+   is already a microsecond matrix multiply, and the query embedding / model call
+   dominates the time (my final is ~5 s/query because of the *cross-encoder*, not the
+   index). So IVF/HNSW would give **~0 accuracy gain** and only add a
+   speed-versus-accuracy setting plus build cost. The plan even proposed the right
+   experiment — a **synthetic 10×/100× scale test** — because ANN only starts to matter
+   at scale.
 3. **The index fixes speed, not failure.** The headroom analysis shows the real
    bottleneck is `wrong_paper` (40.2%) — *which* passage is found, not *how fast*. A
    perfect index over the same embeddings and chunks still returns the wrong paper.
    So the failure analysis correctly directed effort to A, B, C instead.
 
-> Honest framing to say out loud: *"I built the exact index because it was already
-> fast enough, and I can justify skipping IVF/HNSW with the headroom numbers: the
-> problem was recall of the right paper, not search speed."*
+> Honest way to say it out loud: *"I built the exact index because it was already fast
+> enough, and I can justify skipping IVF/HNSW with the headroom numbers: the problem
+> was finding the right paper, not search speed."*
 
 ### 9.4 Cross-encoder reranking — clarify: this one **was** built (field guide §07)
 
-To avoid confusion: **cross-encoder reranking IS implemented** — it is optimization C
+To avoid confusion: **cross-encoder reranking IS implemented** — it is change C
 (`src/ragopt/rerank.py`). It is often grouped with "indexing/ranking" but solves a
 *different* problem:
 
-- A **bi-encoder** (`bge-small`, used for dense retrieval) encodes the query and each
-  document *separately*, so document vectors can be precomputed — but the query and
-  document never interact, limiting judgment of exact relevance.
-- A **cross-encoder** concatenates `[query, document]` and runs them through a
-  transformer *together*, giving a much sharper relevance score — at the cost of
-  having to score every (query, candidate) pair live (no precomputation).
+- A **bi-encoder** (`bge-small`, used for dense search) turns the query and each
+  document into vectors *separately*, so document vectors can be precomputed — but the
+  query and document never interact, so exact relevance is judged poorly.
+- A **cross-encoder** puts `[query, document]` together and runs them through a
+  transformer *as one input*, giving a much sharper relevance score — at the cost of
+  having to score every (query, candidate) pair live (nothing can be precomputed).
 
 So the clean distinction to present:
 
@@ -469,9 +469,9 @@ RERANKER (C)         -> makes RANKING better  -> BUILT (rerank.py, cross-encoder
 ```
 
 I used `cross-encoder/ms-marco-MiniLM-L-6-v2` to **reorder the top-30 candidates** —
-cheap enough to be practical, and it directly fixes `ranked_too_low` (right chunk,
-wrong rank). This is why the final system's cost is dominated by reranking (~5 s/query),
-not by the (exact) index.
+cheap enough to use in practice, and it directly fixes `ranked_too_low` (right chunk,
+wrong rank). This is why the final system's cost comes from reranking (~5 s/query), not
+from the (exact) index.
 
 ### 9.5 The other skipped techniques (field guide §03, §06, §07)
 

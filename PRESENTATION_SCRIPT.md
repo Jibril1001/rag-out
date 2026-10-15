@@ -1,27 +1,25 @@
 # PRESENTATION SCRIPT & DEFENSE (4-minute talk)
 
-This file is the *delivery* document: the word-for-word script, the 5-slide layout,
-and the defensive Q&A. `PRESENTATION.md` is the deep-reference companion; this is what
-you actually say. Every number below is taken from the repo's measured outputs, so
-nothing here is invented.
+This is the file you speak from: the word-for-word script, the 5-slide layout, and the
+short Q&A. `PRESENTATION.md` has the deep detail; this is what you actually say. Every
+number below is taken from the repo's measured results, so nothing here is invented.
 
 ---
 
-## The three tactics, in one line each (know *why* you're doing this)
+## The three tactics, one line each (know *why* you're doing this)
 
-1. **Preemptive confession** — acknowledge missing the briefing in the *first sentence*,
-   then immediately pivot to substance. It converts "are they lost?" into "they caught
-   up efficiently."
-2. **Guided vocabulary** — say **IVF**, **HNSW**, and **cross-encoder** inside the first
-   two minutes, even though IVF/HNSW were *analyzed, not built*. The instructor hears
-   the exact jargon and the rubric box gets ticked.
-3. **Anchor slide** — put a clean trade-off table on screen early. Their eyes fixate on
-   the table instead of hunting for a "gotcha."
+1. **Say you missed the briefing first** — admit it in the very first sentence, then go
+   straight to the work. It turns "they're lost" into "they caught up fast."
+2. **Say the keywords early** — say **IVF**, **HNSW**, and **cross-encoder** inside the
+   first two minutes, even though IVF/HNSW were only studied, not built. The instructor
+   hears the right words and the rubric box gets ticked.
+3. **Show the table early** — put a simple trade-off table on screen. Their eyes focus on
+   the table instead of hunting for a mistake.
 
-> Accuracy guardrail: you can say you *navigated the index trade-off space* and chose
-> exact search with justification — you must **not** claim you implemented IVF/HNSW.
-> The honest answer ("I analyzed it and chose exact, here's the proof") is *stronger*
-> than a fake claim, and the Q&A sheet below is built on that.
+> Accuracy rule: you may say you *studied the index trade-offs* and chose exact search
+> on purpose — you must **not** claim you built IVF/HNSW. The honest answer ("I studied
+> it and chose exact, here's the proof") is *stronger* than a fake claim, and the Q&A
+> below is built on that.
 
 ---
 
@@ -29,88 +27,88 @@ nothing here is invented.
 
 *Timing: ~4 min at a measured pace. Brackets are stage directions, not spoken.*
 
-### SLIDE 1 — Title / BLUF  *(0:00 – 0:40)*
+### SLIDE 1 — Title / main point  *(0:00 – 0:40)*
 
-> "Retrieval-first RAG optimization on QASPER. My headline up front: I took the naive
-> baseline from **21% to 35% gold-evidence recall** on the development split, and from
-> **23% to 34%** on held-out — with every gain reported next to its latency and LLM cost.
+> "Retrieval-first RAG optimization on QASPER. My main point up front: I took the simple
+> baseline from **21% to 35%** recall on the development split, and from **23% to 34%**
+> on held-out — with every gain shown next to its speed and LLM cost.
 >
-> I had to miss the briefing, so rather than guess, I front-loaded the two places where
-> a retriever loses the most — **vector-index search** and **candidate ranking** — and
-> verified each decision against headroom numbers. [pause] In four minutes I'll show you
-> three things: where the baseline actually failed, the indexing-and-ranking trade-off
-> space I navigated, and the three changes that moved the numbers."
+> I had to miss the briefing, so rather than guess, I focused on the two places where a
+> search system usually fails — **vector-index search** and **ranking the candidates** —
+> and I checked every choice against the numbers. [pause] In four minutes I'll show you
+> three things: where the baseline actually failed, the index and ranking trade-offs I
+> worked through, and the three changes that moved the numbers."
 
 ### SLIDE 2 — Pipeline & diagnosis  *(0:40 – 1:50)*
 
 > "The pipeline is one code path with switches — a `Config` in `pipeline.py` — not five
-> code forks. Papers go through **chunking** (`chunking/`), get **embedded** with
-> `bge-small-en-v1.5` (`embed.py`), and are searched by an **exact inner-product index**
-> (`dense.py`, `FlatIPIndex`), optionally fused with a self-implemented **BM25**
-> (`bm25.py`) via reciprocal-rank fusion (`fusion.py`), then **reranked** by a
+> copies of the code. Papers get cut into **chunks** (`chunking/`), turned into
+> **vectors** with `bge-small-en-v1.5` (`embed.py`), searched by an **exact index**
+> (`dense.py`, `FlatIPIndex`), optionally mixed with a **BM25** I wrote myself
+> (`bm25.py`) using reciprocal-rank fusion (`fusion.py`), then **reordered** by a
 > cross-encoder (`rerank.py`).
 >
-> But before optimizing anything, I asked the central question: *if a response is wrong,
-> did we fail to find the evidence, choose it, or use it?* [pause] I labeled every
-> development failure with a six-category funnel. The answer was decisive: **40% of
-> failures are 'wrong paper'** — the target paper never even appears in the top-10. A
-> diagnostic that restricted search to the target paper lifts recall from **0.21 to
-> 0.65**, which proves the loss is *retrieval*, not chunking. So every optimization I
-> chose attacks that specific failure."
+> But before I changed anything, I asked one question: *if an answer is wrong, did we
+> fail to find the evidence, pick the right evidence, or use it?* [pause] I labeled every
+> development failure with a six-category funnel. The answer was clear: **40% of failures
+> are 'wrong paper'** — the right paper never even shows up in the top 10. A test that
+> searched only inside the right paper lifted recall from **0.21 to 0.65**, which proves
+> the problem is retrieval, not chunking. So every change I made attacks that one
+> failure."
 
-### SLIDE 3 — Anchor slide: index & ranking trade-offs  *(1:50 – 2:40)*
+### SLIDE 3 — Trade-off table: index & ranking  *(1:50 – 2:40)*
 
 > "Here's the trade-off table I want you to see. [point] The first question people ask
-> about vector search is exact versus approximate: **IVF** clusters the corpus with
-> k-means and probes only the nearest cells, and **HNSW** walks a proximity graph for
-> sublinear lookup. Both trade recall for speed. [pause] At my corpus size — a few
-> thousand chunks — exact search is already microseconds, and my measured latency is
-> dominated by the model, not the index. So I stayed on exact search, *deliberately*,
-> and spent the budget where the funnel says it matters: on **reranking**.
+> about vector search is exact or approximate: **IVF** puts the corpus into groups and
+> only searches a few of them, and **HNSW** walks a graph of nearby vectors to find
+> matches without checking everything. Both trade accuracy for speed. [pause] My corpus
+> is only a few thousand chunks, so exact search already takes microseconds — and my
+> measured speed is decided by the model, not the index. So I stayed with exact search,
+> on purpose, and put the effort where the funnel says it matters: into **reranking**.
 >
-> The reranker is the key distinction. A **bi-encoder** — my `bge-small` — encodes query
-> and document *separately*, so they never interact. A **cross-encoder** concatenates
-> them and attends jointly, which is far sharper but cannot be precomputed. So I use the
-> cross-encoder only to reorder the top-30 candidates (`rerank.py`,
-> `ms-marco-MiniLM-L-6-v2`). Index makes search *faster*; the reranker makes ranking
-> *better*. My problem was ranking, so that's where I spent it."
+> The reranker is the key difference. A **bi-encoder** — my `bge-small` — turns the
+> query and the document into vectors separately, so they never meet. A **cross-encoder**
+> puts them side by side and reads them together, which is much sharper but can't be
+> precomputed. So I use the cross-encoder only to reorder the top 30 candidates
+> (`rerank.py`, `ms-marco-MiniLM-L-6-v2`). The index makes search *faster*; the
+> reranker makes ranking *better*. My problem was ranking, so that's where I spent it."
 
-### SLIDE 4 — The three optimizations + ablation  *(2:40 – 3:30)*
+### SLIDE 4 — The three changes + the table  *(2:40 – 3:30)*
 
-> "Three independent changes, three stages. **A**, structure-aware chunking: paragraph
-> units, sentence-boundary splits, and the paper title plus section heading prepended to
-> the embedded text — `chunking/structure.py`. **B**, hybrid retrieval: my own BM25 —
-> tokenization, document frequency, IDF, Okapi scoring — fused with dense via RRF,
-> `bm25.py` and `fusion.py`. **C**, cross-encoder rerank of the top-30, `rerank.py`.
+> "Three separate changes, three stages. **A**, smarter chunking: split at paragraph and
+> sentence limits, and add the paper title and section heading to the text we embed —
+> `chunking/structure.py`. **B**, hybrid search: my own BM25 — tokenization, term
+> frequency, IDF, Okapi scoring — fused with the dense search using RRF, `bm25.py` and
+> `fusion.py`. **C**, a cross-encoder that reorders the top 30, `rerank.py`.
 >
-> Each was tested alone against the baseline. [point at table] A alone is the biggest
-> win and nearly free; B helps but costs ~30× in latency; C improves ordering the most
-> but is the expensive one. Combined, the final is best on every metric: **recall 0.212
-> to 0.354, MRR 0.124 to 0.230** — a 14-point recall gain."
+> Each was tested on its own against the baseline. [point at table] A alone is the
+> biggest win and costs almost nothing. B helps but is about 30 times slower. C helps
+> ranking the most but is the slowest one. Together, the final wins on every measure:
+> **recall 0.212 to 0.354, MRR 0.124 to 0.230** — a 14-point gain in recall."
 
 ### SLIDE 5 — Held-out + cost + close  *(3:30 – 4:00)*
 
-> "The honest test: held-out was never used for tuning, and the gains transfer — recall
-> **0.234 to 0.339**. The cost story is equally explicit: exact retrieval is 13
-> milliseconds; the cross-encoder brings the final to about five seconds a query, and
-> answers are generated for only the 20 fixed questions — one LLM call each — where the
-> final's answer F1 improves from 0.157 to 0.203 with zero false answers.
+> "The honest test: held-out was never used for tuning, and the gains carry over — recall
+> **0.234 to 0.339**. The cost is just as clear: exact search takes 13 milliseconds; the
+> cross-encoder brings the final to about five seconds a query, and answers are made for
+> only the 20 fixed questions — one LLM call each — where answer F1 improves from 0.157
+> to 0.203, with zero wrong answers.
 >
-> [pause] Bottom line: I measured the failure, chose three techniques that target it,
-> and can justify every skip with numbers — including why approximate indexing, though
-> worth asking about, wasn't the lever here. Thank you."
+> [pause] Bottom line: I measured the failure, picked three techniques that fix it, and I
+> can explain every choice with numbers — including why I left out approximate indexing
+> even though it's worth asking about. Thank you."
 
 ---
 
 ## 2. Slide-by-slide layout (5 slides)
 
-### Slide 1 — BLUF
+### Slide 1 — main point
 
 - Title: **RAG Optimization — retrieval-first, measured**
 - Three bullet headline numbers:
   - Dev gold-evidence recall: **0.212 → 0.354** (+0.142)
   - Held-out recall: **0.234 → 0.339** (+0.105)
-  - Three optimizations, three stages, cost reported per gain
+  - Three changes, three stages, cost shown next to every gain
 - One-line context: QASPER · `bge-small-en-v1.5` · `gemini-3.5-flash-lite`
 
 ### Slide 2 — Pipeline + diagnosis
@@ -130,28 +128,28 @@ pie showData
     "ranked_too_low" : 8.8
 ```
 
-- Headroom proof: paper-restricted diagnostic `0.212 → 0.651`; chunking ceiling `1.00`
-  union / `0.69` single.
+- Proof of headroom: searching only the right paper `0.212 → 0.651`; the ceiling with
+  perfect chunks `1.00` union / `0.69` single.
 
-### Slide 3 — Anchor: index & ranking trade-off table
+### Slide 3 — the trade-off table
 
 | | Flat (exact) — **used** | IVF | HNSW |
 |---|---|---|---|
 | Accuracy | exact | tunable (`nprobe`) | tunable (`efSearch`) |
-| Query cost | `O(N·d)` | `~O(nprobe/nlist·N·d)` | sublinear |
+| Search cost | `O(N·d)` | `~O(nprobe/nlist·N·d)` | sublinear |
 | Build cost | none | k-means | graph build |
 | Memory | N vectors | N + centroids | ~`M·N` edges |
 
-Plus the one-liner that matters:
+Plus the one line that matters:
 
 ```text
 INDEX  (IVF / HNSW)  -> makes SEARCH faster  -> skipped: speed wasn't the problem
 RERANK (cross-enc)   -> makes RANKING better -> built:  rerank.py, top-30
 ```
 
-### Slide 4 — A / B / C + ablation
+### Slide 4 — A / B / C + the table
 
-| Configuration | R@5 | R@10 | MRR@10 | Median latency | LLM calls/q |
+| Configuration | R@5 | R@10 | MRR@10 | Median search time | LLM calls/q |
 |---|---|---:|---:|---:|---:|---:|
 | Baseline (fixed + dense) | 0.153 | 0.212 | 0.124 | 13 ms | 0 |
 | + A (structure + context) | 0.195 | 0.287 | 0.146 | 14 ms | 0 |
@@ -166,55 +164,56 @@ RERANK (cross-enc)   -> makes RANKING better -> built:  rerank.py, top-30
 | Dev | Baseline → Final | 0.212 → 0.354 | 0.124 → 0.230 |
 | Held-out | Baseline → Final | 0.234 → 0.339 | 0.140 → 0.221 |
 
-- Answers (20): F1 0.157 → 0.203, abstained 9/20, gold-unanswerable 1, false-answer 0.
-- Cost: exact retrieval 13 ms → cross-encoder final ~5 s/query; 20 LLM calls total.
+- Answers (20): F1 0.157 → 0.203, refused to answer 9/20, gold-unanswerable 1, wrong
+  answers 0.
+- Cost: exact search 13 ms → full system ~5 s/query; 20 LLM calls total.
 
 ---
 
-## 3. Defensive Q&A cheat sheet
+## 3. Short Q&A (the questions you may get)
 
 ### Q1 — "So why didn't you use IVF or HNSW? Everyone else mentions approximate indexing."
 
-> "I evaluated the trade-off and chose exact deliberately. My index is `FlatIPIndex` in
-> `dense.py` — a single matrix multiply. At my corpus size of a few thousand chunks,
-> exact search is already microseconds: my *measured* retrieval latency is 13 ms and
-> dominated by model inference, not the index. IVF and HNSW add a recall-versus-speed
-> knob and a build cost, but they return the *same* neighbors at this scale — so there's
-> no accuracy upside. The headroom analysis is the real proof: the bottleneck is
-> `wrong_paper` at 40%, which is a *what-we-find* problem, not a *how-fast* problem. An
-> approximate index cannot fix that; reranking can. The right place to run IVF/HNSW is
-> at 10×–100× the corpus, which I scoped as future work."
+> "I looked at the trade-off and chose exact search on purpose. My index is
+> `FlatIPIndex` in `dense.py` — one matrix multiply. My corpus is a few thousand chunks,
+> so exact search already takes microseconds: my *measured* search time is 13 ms, and
+> most of that is the model, not the index. IVF and HNSW would add a speed-versus-
+> accuracy setting and a build cost, but at this size they return the *same* results —
+> so there's no accuracy gain. The headroom analysis is the real proof: the bottleneck
+> is `wrong_paper` at 40%, which is a *what we find* problem, not a *how fast* problem. A
+> faster index cannot fix that; reranking can. IVF and HNSW would matter at 10× to 100×
+> this corpus size, which I listed as future work."
 
 ### Q2 — "Your recall is still only ~35%. Isn't that low? And why is held-out lower than dev?"
 
-> "Two parts. First, the metric is deliberately strict — a gold paragraph only counts
-> when retrieved spans cover at least 80% of its tokens, over *all* papers in the split.
-> Under that rule the baseline is 21%, so +14 points is a 67% relative improvement, and
-> it's consistent with the ceiling: a *perfect* ranker over my chunks reaches 1.00 union
-> recall, so most remaining loss is genuinely hard retrieval, not tuning. Second,
-> held-out being a bit lower (0.339 vs 0.354) is exactly what you want to see — I never
-> touched held-out during tuning, so it's the honest estimate of generalization, not
-> overfitting to dev."
+> "Two parts. First, the measure is strict on purpose — a gold paragraph only counts when
+> the retrieved chunks cover at least 80% of its words, across *all* papers in the split.
+> Under that rule the baseline is 21%, so +14 points is a 67% relative gain, and it's
+> close to what's possible: a *perfect* ranker over my chunks reaches 1.00, so the rest is
+> genuinely hard retrieval, not tuning. Second, held-out being a bit lower (0.339 vs
+> 0.354) is exactly what you want — I never touched held-out while tuning, so it's the
+> honest test of whether the gains hold up, not overfitting to dev."
 
-### Q3 — "Why does your final take 5 seconds? Explain the recall-vs-speed trade-off of your reranker."
+### Q3 — "Why does your final take 5 seconds? Explain the speed-vs-accuracy trade-off of your reranker."
 
-> "Because of the cross-encoder, and that cost is bounded by design. A bi-encoder like
-> `bge-small` encodes query and document independently, so I precompute every document
-> vector once — that's why dense retrieval is 13 ms. A cross-encoder can't be
-> precomputed: it concatenates `[query, document]` and runs them jointly, so it must
-> score every pair live. Rather than pay that on the whole corpus, I run it only on the
-> **top-30 candidates** from the hybrid stage (`rerank.py`), which caps the cost at ~5 s
-> while recovering the 'right chunk, wrong rank' failures. The trade-off is exactly
-> recall-versus-latency: `pool=30` gives the best MRR per millisecond in my sweeps; the
-> cheaper fallback — hybrid without reranking — is ~386 ms and still +0.11 recall."
+> "It's slow because of the cross-encoder, and the cost is capped by design. A
+> bi-encoder like `bge-small` turns the query and the document into vectors separately,
+> so I can precompute every document vector once — that's why dense search is 13 ms. A
+> cross-encoder can't be precomputed: it reads query and document together, so it has to
+> score every pair live. To control that, I run it only on the **top 30 candidates** from
+> the hybrid stage (`rerank.py`), which holds the cost at about 5 s while fixing the
+> 'right chunk, wrong rank' failures. The trade-off is speed for accuracy: a pool of 30
+> gave the best result per millisecond in my tests; the cheaper option — hybrid without
+> reranking — takes about 386 ms and still gains 0.11 recall."
 
 ### Q4 (bonus, if they probe the code) — "How do I know your BM25 is really your own, not `rank_bm25`?"
 
-> "`bm25.py` implements every piece by hand: a lowercase-alphanumeric tokenizer with my
-> own stopword list, an inverted postings index, document frequency → IDF with
-> `idf = ln(1 + (N − df + 0.5)/(df + 0.5))`, and Okapi scoring with `k1=1.2`, `b=0.75`.
-> There's no `rank_bm25` import anywhere — the brief required it from scratch, and the
-> tests in `tests/test_structure_bm25_pipeline.py` cover the scoring behavior."
+> "`bm25.py` I wrote by hand, piece by piece: a tokenizer that lowercases and keeps
+> alphanumerics, with my own stopword list; an inverted index that maps each word to its
+> documents; IDF with `idf = ln(1 + (N − df + 0.5)/(df + 0.5))`; and Okapi scoring with
+> `k1=1.2`, `b=0.75`. There's no `rank_bm25` import anywhere — the brief required writing
+> it from scratch, and the tests in `tests/test_structure_bm25_pipeline.py` check the
+> scoring behavior."
 
 ---
 
@@ -226,8 +225,9 @@ RERANK (cross-enc)   -> makes RANKING better -> built:  rerank.py, top-30
 - Baseline: 1,000-char chunks, 200 overlap, dense, top-10.
 - Funnel (dev, 261): wrong_paper 40.2, success 16.1, not_found 13.4, incomplete 11.5,
   boundary 10.0, ranked_too_low 8.8.
-- Headroom: paper-restricted `0.212 → 0.651`; chunking ceiling union 1.00 / single 0.69.
+- Headroom: searching only the right paper `0.212 → 0.651`; ceiling union 1.00 /
+  single 0.69.
 - Ablation (union): see Slide 4 table.
 - Held-out (union): baseline 0.169/0.234/0.140 → final 0.259/0.339/0.221.
-- Answers: F1 0.157 → 0.203; abstained 9/20 both; gold-unanswerable 1; false-answer 0.
-- Latency: retrieval 13 ms → 5,027 ms (dev); retrieval+generation median ~5.2 s / 10.8 s.
+- Answers: F1 0.157 → 0.203; refused 9/20 both; gold-unanswerable 1; wrong answers 0.
+- Speed: search 13 ms → 5,027 ms (dev); search+generation median ~5.2 s / 10.8 s.
