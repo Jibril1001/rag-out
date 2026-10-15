@@ -3,6 +3,23 @@
 ## Why Chunking Matters
 Chunking is **not just cutting text** — it determines what a search result can explain on its own. A well-designed chunk keeps related information together, while poor chunking splits related content across multiple chunks, making it impossible for any single chunk to reach the 80% token coverage threshold.
 
+## How to read the numbers: R@10 (union)
+
+Every `R@10 (union)` number in this file uses one rule (defined in `src/ragopt/metrics.py`):
+
+1. Take the retriever's **top-10 chunks**; only chunks from the **target paper** count.
+2. A gold paragraph is **covered** when the merged (`union`) source spans of those chunks
+   contain **≥80% of its word tokens** — several small chunks can cover one paragraph
+   together. (The other mode, `single`, requires one chunk alone to reach 80%.)
+3. **R@10** = covered gold paragraphs ÷ total gold paragraphs for that question,
+   averaged over the questions that have paragraph gold (261 dev / 155 held-out).
+
+So `R@10 (union): 0.212` means *"on average, 21% of a question's gold paragraphs are
+≥80% present within the top 10 results."* How to judge a value: **0.21 baseline is
+weak → 0.35 (our final) is a solid +67% relative gain → ~0.65 is the realistic ceiling**
+(searching only inside the correct paper gives 0.651) **→ 1.00 is the theoretical
+ceiling** if chunking never splits evidence (0.69 in single mode).
+
 ## Baseline: Fixed-Window Chunking
 
 ### Configuration
@@ -60,6 +77,14 @@ Two effects:
 - Index short units (2-3 sentences) for precision
 - But return the containing parent paragraph for context
 - Separates the best unit for *finding* from the best unit for *explaining*
+
+**Why it would have helped here:** a short snippet matches a query precisely, so the
+right paper climbs higher in the ranking (fewer `wrong_paper` failures); and once that
+snippet hits, returning its full parent paragraph covers the gold paragraph in one span
+at ~100%, which directly feeds the ≥80% R@10 rule above. Optimization A already covers
+part of this — it merges short paragraphs (≤300 chars) and never splits mid-sentence —
+so `s2b` was left at the cut line. Status: logged as `s2b` in `decisions.md` and
+`PRESENTATION.md` §9.5; ingestion stage, zero LLM cost; never built.
 
 ### Other Chunking Options (Planned but Not Built)
 - **MMR + dedup**: Drop chunks whose spans overlap >50% with a higher-ranked one
